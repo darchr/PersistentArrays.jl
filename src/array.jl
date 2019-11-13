@@ -61,8 +61,11 @@ function PersistentArray(A::AbstractArray{T,N}) where {T,N}
     return P
 end
 
-# Baseic accessor.
+# Basic accessor.
 Base.pointer(P::PersistentArray) = P.ptr
+
+# needed to support views? Why do the fallbacks not work??
+Base.elsize(::PersistentArray{T}) where {T} = sizeof(T)
 
 # Clean up the backing file as well.
 destroy(P::PersistentArray) = free(Base.unsafe_convert(Ptr{Nothing}, P.ptr), true)
